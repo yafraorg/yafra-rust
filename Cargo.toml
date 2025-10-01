@@ -1,0 +1,28 @@
+[workspace]
+members = [
+    "cli-ratatui",
+]
+
+# Optional: Define workspace-wide dependencies that can be inherited by member crates
+[workspace.dependencies]
+ratatui = "0.29"
+
+
+# Optional: Workspace metadata
+[workspace.metadata]
+authors = ["Your Name <your.email@example.com>"]
+description = "Yafra Rust workspace containing multiple CLI and utility projects"
+homepage = "https://github.com/yafraorg/yafra-rust"
+repository = "https://github.com/yafraorg/yafra-rust"
+license = "MIT OR Apache-2.0"
+edition = "2024"
+
+# Optional: Configure workspace-wide settings
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+enum_glob_use = "deny"
+pedantic = "warn"
+nursery = "warn"
+unwrap_used = "deny"
