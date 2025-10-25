@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build yafracli",
+			"type": "shell",
+			"command": "cargo",
+			"args": [
+				"build",
+				"-p",
+				"yafracli"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build"
+		}
+	]
+}

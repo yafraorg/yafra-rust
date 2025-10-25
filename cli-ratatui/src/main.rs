@@ -4,6 +4,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
+use mysql::prelude::Queryable;
 use ratatui::{
     backend::{Backend, CrosstermBackend},
     layout::{Constraint, Direction, Layout},
@@ -86,6 +87,38 @@ fn main() -> io::Result<()> {
             let mut cmd = Cli::command();
             cmd.print_help().unwrap();
         }
+    }
+
+    // Add database connection logic here if needed in the future
+    // For now, this is a placeholder for potential database operations
+    // Database connection setup
+    let database_url = "mysql://root@localhost:3306/yafra";
+    println!("Database connection would be established to: {}", database_url);
+    // TODO: Add actual database connection logic using a crate like mysql or sqlx
+    // Example: let pool = mysql::Pool::new(database_url)?;
+    // Database query execution
+    match mysql::Pool::new(database_url) {
+        Ok(pool) => {
+            match pool.get_conn() {
+                Ok(mut conn) => {
+                    let query = "SELECT * FROM orders";
+                    match conn.query_map(query, |row: mysql::Row| {
+                        // Convert row to a string representation
+                        format!("{:?}", row)
+                    }) {
+                        Ok(results) => {
+                            println!("Orders table contents:");
+                            for (i, row) in results.iter().enumerate() {
+                                println!("Row {}: {}", i + 1, row);
+                            }
+                        }
+                        Err(e) => println!("Error executing query: {}", e),
+                    }
+                }
+                Err(e) => println!("Error getting connection: {}", e),
+            }
+        }
+        Err(e) => println!("Error creating connection pool: {}", e),
     }
     
     Ok(())

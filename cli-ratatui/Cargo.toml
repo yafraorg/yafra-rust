@@ -7,3 +7,4 @@ edition = "2024"
 ratatui = { workspace = true }
 crossterm = "0.28"
 clap = { version = "4.4", features = ["derive"] }
+mysql = "24.0"
