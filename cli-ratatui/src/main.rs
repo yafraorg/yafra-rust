@@ -89,19 +89,20 @@ fn main() -> io::Result<()> {
         }
     }
 
-    // Add database connection logic here if needed in the future
-    // For now, this is a placeholder for potential database operations
     // Database connection setup
-    let database_url = "mysql://root@localhost:3306/yafra";
-    println!("Database connection would be established to: {}", database_url);
-    // TODO: Add actual database connection logic using a crate like mysql or sqlx
-    // Example: let pool = mysql::Pool::new(database_url)?;
+    let database_url = format!(
+        "mysql://{}:{}@localhost:3306/{}",
+        env::var("DB_USER").unwrap_or_else(|_| "root".to_string()),
+        env::var("DB_PASSWORD").unwrap_or_else(|_| "root1234".to_string()),
+        env::var("DB_NAME").unwrap_or_else(|_| "business".to_string())
+    );
+    println!("Database connection will be established to: {}", database_url);
     // Database query execution
     match mysql::Pool::new(database_url) {
         Ok(pool) => {
             match pool.get_conn() {
                 Ok(mut conn) => {
-                    let query = "SELECT * FROM orders";
+                    let query = "SELECT * FROM transactions";
                     match conn.query_map(query, |row: mysql::Row| {
                         // Convert row to a string representation
                         format!("{:?}", row)
